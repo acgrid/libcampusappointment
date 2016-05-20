@@ -1,0 +1,22 @@
+{
+  "name": "acgrid/libcampusappointment",
+  "type": "library",
+  "keyword": ["appointment", "library", "service"],
+  "description": "Common library for integrating campus appointment to any PHP application.",
+  "author": [
+    {"name": "acgrid", "email": "acgrid@gmail.com", "homepage": "http://github.com/acgrid"}
+  ],
+  "require": {
+    "php": "~5.6|~7.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "CampusAppointment\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "CampusAppointmentTest\\": "tests/"
+    }
+  }
+}
