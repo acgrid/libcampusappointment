@@ -21,12 +21,17 @@ class SampleModel extends AbstractModel{
     protected $WO = 'Write-only';
     protected $RW = 'Public';
 
-    protected static $reads = ['RO', 'RW'];
-    protected static $writes = ['WO', 'RW'];
+    protected static $readable = ['RO', 'RW'];
+    protected static $writable = ['WO', 'RW'];
 
     public function getRO()
     {
         return "{$this->RO} by getter";
+    }
+
+    public function getDYN()
+    {
+        return 'DYN by getter';
     }
 
     public function setRW($value)
@@ -51,6 +56,7 @@ class CommonModelTest extends \PHPUnit_Framework_TestCase
     public function testGetters()
     {
         $this->assertSame('Read-only by getter', $this->sample->RO);
+        $this->assertTrue(isset($this->sample->RO));
         try{
             $this->sample->WO;
             $this->fail('An exception shall be thrown on access forbidden properties.');
@@ -77,5 +83,9 @@ class CommonModelTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    public function testJSON()
+    {
+        $this->assertSame('{"RO":"Read-only by getter","RW":"Public","DYN":"DYN by getter"}', json_encode(new SampleModel()));
+    }
 
 }
