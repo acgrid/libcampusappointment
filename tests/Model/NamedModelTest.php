@@ -4,7 +4,7 @@
 namespace CampusAppointmentTest\Model;
 
 
-use CampusAppointment\Model\Zone;
+use CampusAppointment\Model\Preset\Zone;
 
 class NamedModelTest extends \PHPUnit_Framework_TestCase
 {

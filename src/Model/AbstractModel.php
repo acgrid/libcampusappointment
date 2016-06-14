@@ -3,7 +3,10 @@
 
 namespace CampusAppointment\Model;
 
-
+/**
+ * Class AbstractModel
+ * @package CampusAppointment\Model
+ */
 abstract class AbstractModel implements PersistentModel, \JsonSerializable
 {
     const PRIMARY_KEY = 'id';
@@ -13,7 +16,7 @@ abstract class AbstractModel implements PersistentModel, \JsonSerializable
 
     public function __get($name)
     {
-        $function = 'get' . ucfirst($name);
+        $function = "get{$name}";
         if(is_callable([$this, $function])){
             return call_user_func([$this, $function]);
         }elseif($name === 'readable' || $name === 'writable' || in_array($name, static::$readable)){
@@ -25,7 +28,7 @@ abstract class AbstractModel implements PersistentModel, \JsonSerializable
 
     public function __set($name, $value)
     {
-        $function = 'set' . ucfirst($name);
+        $function = "set{$name}";
         if(is_callable([$this, $function])){
             call_user_func([$this, $function], $value);
         }elseif(in_array($name, static::$writable)){

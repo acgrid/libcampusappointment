@@ -20,4 +20,15 @@ abstract class NamedModel extends AbstractModel implements FlyweightModel
     {
         return $this->id;
     }
+
+    /**
+     * @param string $name
+     * @return NamedModel
+     */
+    public function setName(string $name)
+    {
+        $this->name = $name;
+        return $this;
+    }
+
 }
