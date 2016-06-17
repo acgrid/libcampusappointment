@@ -1,10 +1,11 @@
 <?php
 
 
-namespace CampusAppointment\Model;
+namespace CampusAppointment\Model\Preset;
 
 
 use CampusAppointment\Helper\DateUtils;
+use CampusAppointment\Model\FlyweightModel;
 
 class Semester implements FlyweightModel
 {

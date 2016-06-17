@@ -4,7 +4,7 @@
 namespace CampusAppointment\DataSource;
 
 
-use CampusAppointment\Model\Academy;
+use CampusAppointment\Model\Preset\Academy;
 
 interface AcademyInterface extends FlyweightSource
 {

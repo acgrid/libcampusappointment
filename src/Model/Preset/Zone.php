@@ -1,7 +1,8 @@
 <?php
 
 
-namespace CampusAppointment\Model;
+namespace CampusAppointment\Model\Preset;
+use CampusAppointment\Model\NamedModel;
 
 /**
  * Class Zone

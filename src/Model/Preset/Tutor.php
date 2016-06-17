@@ -1,7 +1,9 @@
 <?php
 
 
-namespace CampusAppointment\Model;
+namespace CampusAppointment\Model\Preset;
+use CampusAppointment\Model\AbstractModel;
+use CampusAppointment\Model\FlyweightModel;
 
 /**
  * Class Tutor

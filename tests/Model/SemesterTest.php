@@ -4,7 +4,7 @@
 namespace CampusAppointmentTest\Model;
 
 
-use CampusAppointment\Model\Semester;
+use CampusAppointment\Model\Preset\Semester;
 
 class SemesterTest extends \PHPUnit_Framework_TestCase
 {

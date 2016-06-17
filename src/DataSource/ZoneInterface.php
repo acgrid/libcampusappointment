@@ -4,7 +4,7 @@
 namespace CampusAppointment\DataSource;
 
 
-use CampusAppointment\Model\Zone;
+use CampusAppointment\Model\Preset\Zone;
 
 interface ZoneInterface extends FlyweightSource
 {

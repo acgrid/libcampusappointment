@@ -5,7 +5,7 @@ namespace CampusAppointment\State;
 
 
 use CampusAppointment\Helper\DateUtils;
-use CampusAppointment\Model\Appointment;
+use CampusAppointment\Model\Preset\Appointment;
 
 class CancelledState extends AbstractState
 {

@@ -1,12 +1,14 @@
 <?php
 
 
-namespace CampusAppointment\Model;
+namespace CampusAppointment\Model\Preset;
 
 
+use CampusAppointment\DataSource\AppointmentChangeInterface;
 use CampusAppointment\DataSource\CategoryInterface;
 use CampusAppointment\DataSource\ScheduleInterface;
 use CampusAppointment\DataSource\VisitorInterface;
+use CampusAppointment\Model\AbstractModel;
 use CampusAppointment\State\AbandonedState;
 use CampusAppointment\State\AbstractState;
 use CampusAppointment\State\CancelledState;
@@ -61,18 +63,20 @@ class Appointment extends AbstractModel
      */
     protected $changes;
     
-    protected static $readable = ['date', 'created'];
+    protected static $readable = ['schedule', 'visitor', 'date', 'created'];
 
-    protected $scheduleDB;
-    protected $visitorDB;
-    protected $categoryDB;
-    protected $changesDB;
+    protected $scheduleDS;
+    protected $visitorDS;
+    protected $categoryDS;
+    protected $changesDS;
 
-    public function __construct(ScheduleInterface $scheduleInterface, VisitorInterface $visitorInterface, CategoryInterface $categoryInterface)
+    public function __construct(ScheduleInterface $scheduleInterface, VisitorInterface $visitorInterface,
+                                CategoryInterface $categoryInterface, AppointmentChangeInterface $appointmentChangeInterface)
     {
-        $this->scheduleDB = $scheduleInterface;
-        $this->visitorDB = $visitorInterface;
-        $this->categoryDB = $categoryInterface;
+        $this->scheduleDS = $scheduleInterface;
+        $this->visitorDS = $visitorInterface;
+        $this->categoryDS = $categoryInterface;
+        $this->changesDS = $appointmentChangeInterface;
     }
 
     /**
@@ -80,6 +84,9 @@ class Appointment extends AbstractModel
      */
     public function getSchedule()
     {
+        if(is_int($this->schedule)){
+            $this->schedule = $this->scheduleDS->get($this->schedule);
+        }
         return $this->schedule;
     }
 
@@ -88,6 +95,9 @@ class Appointment extends AbstractModel
      */
     public function getVisitor()
     {
+        if(is_int($this->visitor)){
+            $this->visitor = $this->visitorDS->get($this->visitor);
+        }
         return $this->visitor;
     }
 
@@ -112,6 +122,9 @@ class Appointment extends AbstractModel
      */
     public function getChanges()
     {
+        if($this->changes === null){
+            $this->changes = $this->changesDS->getDerived($this->id);
+        }
         return $this->changes;
     }
 

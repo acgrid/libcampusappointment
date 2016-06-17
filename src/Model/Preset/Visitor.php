@@ -1,8 +1,10 @@
 <?php
 
 
-namespace CampusAppointment\Model;
+namespace CampusAppointment\Model\Preset;
 
+
+use CampusAppointment\Model\AbstractModel;
 
 abstract class Visitor extends AbstractModel
 {

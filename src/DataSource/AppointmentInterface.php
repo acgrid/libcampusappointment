@@ -4,15 +4,19 @@
 namespace CampusAppointment\DataSource;
 
 
-use CampusAppointment\Model\Appointment;
-use CampusAppointment\Model\Schedule;
+use CampusAppointment\Model\Preset\Appointment;
+use CampusAppointment\Model\Preset\Schedule;
 
 interface AppointmentInterface extends FlyweightSource
 {
+    const WITH_SCHEDULE = 'S';
     const WITH_VISITOR = 'V';
     const CONDITION_VISITOR_UNIQUE_ID = '';
-    const CONDITION_IN_THIS_WEEK = '';
-    const CONDITION_STATE_IN = '';
+    const CONDITION_FUTURE_NATURAL_WEEK = '';
+    const CONDITION_PAST_NATURAL_WEEK = '';
+    const CONDITION_FUTURE_FOLLOWING_WEEK = '';
+    const CONDITION_PAST_FOLLOWING_WEEK = '';
+    const CONDITION_STATES_IN = '';
 
     public function get(int $id): Appointment;
     public function find(array $conditions = []): array;

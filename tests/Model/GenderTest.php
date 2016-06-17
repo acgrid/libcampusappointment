@@ -4,7 +4,7 @@
 namespace CampusAppointmentTest\Model;
 
 
-use CampusAppointment\Model\Gender;
+use CampusAppointment\Model\Preset\Gender;
 
 class GenderTest extends \PHPUnit_Framework_TestCase
 {

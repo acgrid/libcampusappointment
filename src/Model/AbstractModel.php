@@ -3,7 +3,10 @@
 
 namespace CampusAppointment\Model;
 
-
+/**
+ * Class AbstractModel
+ * @package CampusAppointment\Model
+ */
 abstract class AbstractModel implements PersistentModel, \JsonSerializable
 {
     const PRIMARY_KEY = 'id';

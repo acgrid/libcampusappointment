@@ -4,7 +4,7 @@
 namespace CampusAppointment\DataSource;
 
 
-use CampusAppointment\Model\Schedule;
+use CampusAppointment\Model\Preset\Schedule;
 
 interface ScheduleInterface extends FlyweightSource
 {

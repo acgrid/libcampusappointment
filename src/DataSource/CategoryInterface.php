@@ -4,7 +4,7 @@
 namespace CampusAppointment\DataSource;
 
 
-use CampusAppointment\Model\Category;
+use CampusAppointment\Model\Preset\Category;
 
 interface CategoryInterface extends FlyweightSource
 {

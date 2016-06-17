@@ -4,7 +4,7 @@
 namespace CampusAppointment\State;
 
 
-use CampusAppointment\Model\Appointment;
+use CampusAppointment\Model\Preset\Appointment;
 
 abstract class AbstractState
 {
