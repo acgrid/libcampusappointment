@@ -164,7 +164,9 @@ class Appointment extends AbstractModel
      */
     public function setCategories(array $categories)
     {
-        $this->categories = $categories;
+        $this->categories = array_filter($categories, function($category){
+            return $category instanceof Category;
+        });
         return $this;
     }
 
@@ -175,16 +177,6 @@ class Appointment extends AbstractModel
     public function setCreated(\DateTimeImmutable $created)
     {
         $this->created = $created;
-        return $this;
-    }
-
-    /**
-     * @param array $changes
-     * @return $this
-     */
-    public function setChanges(array $changes)
-    {
-        $this->changes = $changes;
         return $this;
     }
     
