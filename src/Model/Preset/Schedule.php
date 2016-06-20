@@ -3,7 +3,7 @@
 
 namespace CampusAppointment\Model\Preset;
 
-use CampusAppointment\DataSource\TutorInterface;
+use CampusAppointment\DataSource\ScheduleInterface;
 use CampusAppointment\Helper\DateUtils;
 use CampusAppointment\Model\AbstractModel;
 use CampusAppointment\Model\FlyweightModel;
@@ -28,9 +28,9 @@ class Schedule extends AbstractModel implements FlyweightModel
     const LABEL = '预约时段';
 
     /**
-     * @var TutorInterface
+     * @var ScheduleInterface
      */
-    protected $tutorDS;
+    protected $scheduleDS;
     
     protected $id;
     /**
@@ -75,9 +75,9 @@ class Schedule extends AbstractModel implements FlyweightModel
     protected static $readable = ['id', 'zone', 'enabled', 'fromDate', 'tillDate', 'weekday', 'weekSpan',
         'fromTime', 'tillTime'];
     
-    public function __construct(TutorInterface $tutorDS)
+    public function __construct(ScheduleInterface $scheduleDS)
     {
-        $this->tutorDS = $tutorDS;
+        $this->scheduleDS = $scheduleDS;
     }
 
     /**
@@ -185,7 +185,7 @@ class Schedule extends AbstractModel implements FlyweightModel
     public function getTutors()
     {
         if($this->tutors === null && $this->id){
-            $this->tutors = $this->tutorDS->find([TutorInterface::CONDITION_SCHEDULE => $this->id]);
+            $this->tutors = $this->scheduleDS->getTutors($this->id);
         }
         return $this->tutors ?? [];
     }
