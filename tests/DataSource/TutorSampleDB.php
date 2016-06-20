@@ -6,6 +6,7 @@ namespace CampusAppointmentTest\DataSource;
 
 use CampusAppointment\DataSource\GenderFactory;
 use CampusAppointment\DataSource\TutorInterface;
+use CampusAppointment\Helper\Generator;
 use CampusAppointment\Model\Preset\Tutor;
 
 class TutorSampleDB implements TutorInterface
@@ -50,6 +51,7 @@ class TutorSampleDB implements TutorInterface
 
     public function persist(Tutor $tutor): TutorInterface
     {
+        if($tutor->id === null) $tutor->id = Generator::nextId($this->db, Tutor::PRIMARY_KEY);
         $this->db[$tutor->id] = $tutor;
         return $this;
     }
@@ -68,7 +70,8 @@ class TutorSampleDB implements TutorInterface
 
     public function replaceAll(array $tutors): TutorInterface
     {
-        // TODO: Implement replaceAll() method.
+        $this->db = [];
+        return $this->persistAll($tutors);
     }
 
 }
