@@ -17,4 +17,12 @@ class Generator
             return $item->$key > $carry ? $item->$key + 1 : $carry;
         }, $default);
     }
+
+    public static function sortIndexedArray(array &$items, string $key)
+    {
+        return uasort($items, function($left, $right) use ($key) {
+            if($left->$key == $right->$key) return 0;
+            return $left->$key > $right->$key ? 1 : -1;
+        });
+    }
 }
