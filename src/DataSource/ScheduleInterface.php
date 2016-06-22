@@ -8,8 +8,10 @@ use CampusAppointment\Model\Preset\Schedule;
 
 interface ScheduleInterface extends FlyweightSource
 {
+    public function withTutors(): ScheduleInterface;
+    public function withoutTutors(): ScheduleInterface;
     public function get(int $id): Schedule;
-    public function getTutors(int $id): array;
+    public function getScheduleTutors(int $id): array;
     public function find(array $conditions = []): array;
     public function query(array $conditions = [], array $fields = []): array;
     public function persist(Schedule $schedule): ScheduleInterface;

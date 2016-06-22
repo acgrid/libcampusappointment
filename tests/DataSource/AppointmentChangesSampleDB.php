@@ -18,7 +18,7 @@ use CampusAppointment\State\ConfirmedState;
 class AppointmentChangesSampleDB implements AppointmentChangeInterface
 {
     private $db;
-    
+
     public function __construct()
     {
         $this->db = [

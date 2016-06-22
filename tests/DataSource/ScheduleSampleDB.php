@@ -5,7 +5,10 @@ namespace CampusAppointmentTest\DataSource;
 
 
 use CampusAppointment\DataSource\ScheduleInterface;
+use CampusAppointment\Helper\DateUtils;
+use CampusAppointment\Helper\Generator;
 use CampusAppointment\Model\Preset\Schedule;
+use CampusAppointment\Model\Preset\Tutor;
 
 class ScheduleSampleDB implements ScheduleInterface
 {
@@ -14,20 +17,22 @@ class ScheduleSampleDB implements ScheduleInterface
 
     public function __construct()
     {
+        $zoneDS = new ZoneSampleDB();
+        $tutorDS = new TutorSampleDB();
         $this->db = [
-            1 => (new Schedule($this))->setId(1),
-            2 => (new Schedule($this))->setId(2),
-            3 => (new Schedule($this))->setId(3),
+            1 => (new Schedule($this))->setId(1)->setZone($zoneDS->get(1))->setFromDate(DateUtils::getImmutable('2016-03-01'))->setTillDate(DateUtils::getImmutable('2016-07-31'))->setWeekday(2)->setWeekSpan(0)->setFromTime('13:00')->setTillTime('14:00')->setTutors([$tutorDS->get(1), $tutorDS->get(2)]),
+            2 => (new Schedule($this))->setId(2)->setZone($zoneDS->get(2))->setFromDate(DateUtils::getImmutable('2016-03-01'))->setTillDate(DateUtils::getImmutable('2016-07-31'))->setWeekday(5)->setWeekSpan(1)->setFromTime('13:00')->setTillTime('14:00')->setTutors([$tutorDS->get(2)]),
+            3 => (new Schedule($this))->setId(3)->setZone($zoneDS->get(1))->setFromDate(DateUtils::getImmutable('2016-03-01'))->setTillDate(DateUtils::getImmutable('2016-07-31'))->setWeekday(2)->setWeekSpan(0)->setFromTime('13:00')->setTillTime('14:00')->setTutors([(new Tutor())->setName('Temporary')]),
         ];
     }
 
-    public function withTutors()
+    public function withTutors(): ScheduleInterface
     {
         $this->withTutor = true;
         return $this;
     }
 
-    public function withoutTutors()
+    public function withoutTutors(): ScheduleInterface
     {
         $this->withTutor = false;
         return $this;
@@ -35,26 +40,37 @@ class ScheduleSampleDB implements ScheduleInterface
 
     public function get(int $id): Schedule
     {
-        return $this->db[$id] ?? null;
+        if($schedule = $this->db[$id] ?? null){
+            /** @var Schedule $schedule */
+            if($this->withTutor) return $schedule;
+            $schedule = clone $schedule;
+            return $schedule->clearTutors();
+        }else{
+            return null;
+        }
     }
 
-    public function getTutors(int $id): array
+    public function getScheduleTutors(int $id): array
     {
-        return $this->db;
+        if($this->db[$id]) return $this->db[$id]->getTutors();
+        throw new \InvalidArgumentException('No Such Schedule.');
     }
 
     public function find(array $conditions = []): array
     {
-        // TODO: Implement find() method.
+        return $this->db; // Dummy
     }
 
     public function query(array $conditions = [], array $fields = []): array
     {
-        // TODO: Implement query() method.
+        return array_map(function(Schedule $schedule) use ($fields) {
+            return array_intersect_key($schedule->jsonSerialize(), array_flip($fields));
+        }, $this->find($conditions));
     }
 
     public function persist(Schedule $schedule): ScheduleInterface
     {
+        if($schedule->id === null) $schedule->id = Generator::nextId($this->db, Schedule::PRIMARY_KEY);
         $this->db[$schedule->id] = $schedule;
         return $this;
     }
@@ -73,10 +89,8 @@ class ScheduleSampleDB implements ScheduleInterface
 
     public function replaceAll(array $schedules): ScheduleInterface
     {
-        $this->db = array_filter($schedules, function($schedule){
-            return $schedule instanceof Schedule;
-        });
-        return $this;
+        $this->db = [];
+        return $this->persistAll($schedules);
     }
 
     public function isConflict(Schedule $schedule)

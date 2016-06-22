@@ -40,7 +40,7 @@ class Schedule extends AbstractModel implements FlyweightModel
     /**
      * @var bool
      */
-    protected $enabled;
+    protected $enabled = true;
     /**
      * @var \DateTimeImmutable
      */
@@ -185,7 +185,7 @@ class Schedule extends AbstractModel implements FlyweightModel
     public function getTutors()
     {
         if($this->tutors === null && $this->id){
-            $this->tutors = $this->scheduleDS->getTutors($this->id);
+            $this->tutors = $this->scheduleDS->getScheduleTutors($this->id);
         }
         return $this->tutors ?? [];
     }
@@ -199,6 +199,12 @@ class Schedule extends AbstractModel implements FlyweightModel
         $this->tutors = array_filter($tutors, function($tutor){
             return $tutor instanceof Tutor;
         });
+        return $this;
+    }
+    
+    public function clearTutors()
+    {
+        $this->tutors = null;
         return $this;
     }
 

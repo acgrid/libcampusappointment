@@ -11,6 +11,7 @@ interface AppointmentInterface extends FlyweightSource
 {
     const WITH_SCHEDULE = 'S';
     const WITH_VISITOR = 'V';
+    const WITH_CHANGES = 'C';
     const CONDITION_VISITOR_UNIQUE_ID = '';
     const CONDITION_FUTURE_NATURAL_WEEK = '';
     const CONDITION_PAST_NATURAL_WEEK = '';
@@ -19,6 +20,7 @@ interface AppointmentInterface extends FlyweightSource
     const CONDITION_STATES_IN = '';
 
     public function get(int $id): Appointment;
+    public function getChanges(int $id): array;
     public function find(array $conditions = []): array;
     public function exists(array $conditions = []): bool;
     public function query(array $conditions = [], array $fields = []): array;

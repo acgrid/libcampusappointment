@@ -4,7 +4,7 @@
 namespace CampusAppointment\Model\Preset;
 
 
-use CampusAppointment\DataSource\AppointmentChangeInterface;
+use CampusAppointment\DataSource\AppointmentInterface;
 use CampusAppointment\DataSource\CategoryInterface;
 use CampusAppointment\DataSource\ScheduleInterface;
 use CampusAppointment\DataSource\VisitorInterface;
@@ -65,18 +65,30 @@ class Appointment extends AbstractModel
     
     protected static $readable = ['schedule', 'visitor', 'date', 'created'];
 
+    /**
+     * @var ScheduleInterface
+     */
     protected $scheduleDS;
+    /**
+     * @var VisitorInterface
+     */
     protected $visitorDS;
+    /**
+     * @var CategoryInterface
+     */
     protected $categoryDS;
-    protected $changesDS;
+    /**
+     * @var AppointmentInterface
+     */
+    protected $appointmentDS;
 
     public function __construct(ScheduleInterface $scheduleInterface, VisitorInterface $visitorInterface,
-                                CategoryInterface $categoryInterface, AppointmentChangeInterface $appointmentChangeInterface)
+                                CategoryInterface $categoryInterface, AppointmentInterface $appointmentInterface)
     {
         $this->scheduleDS = $scheduleInterface;
         $this->visitorDS = $visitorInterface;
         $this->categoryDS = $categoryInterface;
-        $this->changesDS = $appointmentChangeInterface;
+        $this->appointmentDS = $appointmentInterface;
     }
 
     /**
@@ -123,7 +135,7 @@ class Appointment extends AbstractModel
     public function getChanges()
     {
         if($this->changes === null){
-            $this->changes = $this->changesDS->getDerived($this->id);
+            $this->changes = $this->appointmentDS->getChanges($this->id);
         }
         return $this->changes;
     }
