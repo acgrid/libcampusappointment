@@ -6,6 +6,17 @@ namespace CampusAppointment\Model\Preset;
 
 use CampusAppointment\Model\AbstractModel;
 
+/**
+ * Class Visitor
+ * @package CampusAppointment\Model\Preset
+ * @property int $id
+ * @property string $uniqueIdentifier
+ * @property string $name
+ * @property Gender $gender
+ * @property int $age
+ * @property string $telephone
+ * @property string $place
+ */
 abstract class Visitor extends AbstractModel
 {
     const LEGACY_SALT_SHA1 = 'LEGACY-SHA1';
@@ -28,6 +39,8 @@ abstract class Visitor extends AbstractModel
      */
     const PLACE_LABEL = '';
 
+    const NO_PASSWORD = 0x0000000000000000000000000000000000000000;
+
     /**
      * Database ID
      * @var int|null
@@ -47,7 +60,7 @@ abstract class Visitor extends AbstractModel
     /**
      * @var string
      */
-    protected $passHash = 0x0000000000000000000000000000000000000000;
+    protected $passHash = self::NO_PASSWORD;
     /**
      * @var string
      */
@@ -65,11 +78,11 @@ abstract class Visitor extends AbstractModel
      */
     protected $telephone;
     /**
-     * @var
+     * @var string
      */
     protected $place;
 
-    protected static $readable = ['id', 'uniqueIdentifier', 'name', 'age', 'gender', 'telephone'];
+    protected static $readable = ['id', 'uniqueIdentifier', 'name', 'age', 'gender', 'telephone', 'place'];
     protected static $writable = ['uniqueIdentifier', 'passType', 'passHash'];
 
     /**

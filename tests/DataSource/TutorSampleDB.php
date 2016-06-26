@@ -21,7 +21,7 @@ class TutorSampleDB implements TutorInterface
         ];
     }
 
-    public function get(int $id): Tutor
+    public function get(int $id)
     {
         return $this->db[$id] ?? null;
     }

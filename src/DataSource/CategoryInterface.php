@@ -8,7 +8,11 @@ use CampusAppointment\Model\Preset\Category;
 
 interface CategoryInterface extends FlyweightSource
 {
-    public function get(int $id): Category;
+    /**
+     * @param int $id
+     * @return Category
+     */
+    public function get(int $id)/*: ?Category*/;
     public function getAll(): array;
     public function persist(Category $category): CategoryInterface;
     public function persistAll(array $categories): CategoryInterface;

@@ -19,7 +19,11 @@ interface AppointmentInterface extends FlyweightSource
     const CONDITION_PAST_FOLLOWING_WEEK = '';
     const CONDITION_STATES_IN = '';
 
-    public function get(int $id): Appointment;
+    /**
+     * @param int $id
+     * @return Appointment
+     */
+    public function get(int $id)/*: Appointment*/;
     public function getChanges(int $id): array;
     public function find(array $conditions = []): array;
     public function exists(array $conditions = []): bool;

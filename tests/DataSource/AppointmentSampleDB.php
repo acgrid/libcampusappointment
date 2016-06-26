@@ -5,7 +5,9 @@ namespace CampusAppointmentTest\DataSource;
 
 
 use CampusAppointment\DataSource\AppointmentInterface;
+use CampusAppointment\Helper\Generator;
 use CampusAppointment\Model\Preset\Appointment;
+use CampusAppointment\Model\Preset\Category;
 use CampusAppointment\Model\Preset\Schedule;
 use CampusAppointment\Helper\DateUtils;
 use CampusAppointment\Model\Preset\AppointmentChange;
@@ -15,14 +17,17 @@ use CampusAppointment\State\ConfirmedState;
 class AppointmentSampleDB implements AppointmentInterface
 {
     private $db;
+    private $changes;
     private $scheduleDS;
     private $visitorDS;
     private $categoryDS;
 
     public function __construct()
     {
-        $this->db = [
-            
+        $this->scheduleDS = new ScheduleSampleDB();
+        $this->visitorDS = new VisitorSampleDB();
+        $this->categoryDS = new CategorySampleDB();
+        $this->changes = [
             1 => [
                 (new AppointmentChange())->setId(1)->setChanged('Confirmed appointment')->setDatetime(DateUtils::getLocal('2016-01-01 08:15:00'))->setIp('127.0.0.1')->setState(ConfirmedState::getInstance())->setPrevious('State: Pending')->setUser(1),
                 (new AppointmentChange())->setId(2)->setChanged('Change to schedule #2')->setDatetime(DateUtils::getLocal('2016-01-02 12:35:00'))->setIp('127.0.0.1')->setState(ConfirmedState::getInstance())->setPrevious('Schedule: #1')->setUser(1),
@@ -33,56 +38,65 @@ class AppointmentSampleDB implements AppointmentInterface
                 (new AppointmentChange())->setId(5)->setChanged('Change to schedule #2')->setDatetime(DateUtils::getLocal('2016-01-02 12:35:00'))->setIp('127.0.0.1')->setState(ConfirmedState::getInstance())->setPrevious('Schedule: #1')->setUser(1)
             ],
         ];
+        $this->db = [
+            1 => $this->makeAppointment()->setId(1)->setSchedule($this->scheduleDS->get(1))->setDate(DateUtils::getImmutableToday())->setVisitor($this->visitorDS->get(1))->setCreated(DateUtils::getImmutableNow())->setCategories([$this->categoryDS->get(1), (new Category())->setName('特别问题')]),
+            2 => $this->makeAppointment()->setId(2)->setSchedule($this->scheduleDS->get(2))->setDate(DateUtils::getImmutableToday())->setVisitor($this->visitorDS->get(2))->setCreated(DateUtils::getImmutableNow())->setCategories([$this->categoryDS->get(2), (new Category())->setName('特别问题2')]),
+        ];
     }
     
     public function makeAppointment(): Appointment
     {
-        
+        return new Appointment($this->scheduleDS, $this->visitorDS, $this->categoryDS, $this);
     }
     
-    public function get(int $id): Appointment
+    public function get(int $id)
     {
-        // TODO: Implement get() method.
+        return $this->db[$id] ?? null;
     }
 
     public function getChanges(int $id): array
     {
-        // TODO: Implement getChanges() method.
+        return $this->changes[$id] ?? [];
     }
 
     public function find(array $conditions = []): array
     {
-        // TODO: Implement find() method.
+        return [];
     }
 
     public function exists(array $conditions = []): bool
     {
-        // TODO: Implement exists() method.
+        return [];
     }
 
     public function query(array $conditions = [], array $fields = []): array
     {
-        // TODO: Implement query() method.
+        return [];
     }
 
     public function persist(Appointment $appointment): AppointmentInterface
     {
-        // TODO: Implement persist() method.
+        if($appointment->id === null) $appointment->id = Generator::nextId($this->db, Appointment::PRIMARY_KEY);
+        $this->db[$appointment->id] = $appointment;
+        return $this;
     }
 
     public function persistAll(array $appointments): AppointmentInterface
     {
-        // TODO: Implement persistAll() method.
+        array_walk($appointments, [$this, 'persist']);
+        return $this;
     }
 
     public function remove(Appointment $appointment): bool
     {
-        // TODO: Implement remove() method.
+        if($has = isset($this->db[$appointment->id])) unset($this->db[$appointment->id]);
+        return $has;
     }
 
     public function removeAll(array $appointments): AppointmentInterface
     {
-        // TODO: Implement removeAll() method.
+        $this->db = [];
+        return $this->persistAll($appointments);
     }
 
     public function getChangeableSchedules(Schedule $schedule, int $days): array

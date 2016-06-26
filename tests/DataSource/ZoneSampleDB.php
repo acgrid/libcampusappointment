@@ -24,7 +24,7 @@ class ZoneSampleDB implements ZoneInterface
         ];
     }
 
-    public function get(int $id): Zone
+    public function get(int $id)
     {
         return $this->db[$id] ?? null;
     }

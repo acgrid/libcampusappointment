@@ -18,8 +18,8 @@ use CampusAppointment\State\PendingState;
 /**
  * Class Appointment
  * @package CampusAppointment\Model
- * @property-read int $id
- * @property-read Schedule $schedule
+ * @property int $id
+ * @property Schedule $schedule
  * @property-read \DateTimeImmutable $date
  * @property-read Visitor $visitor
  * @property-read array $categories

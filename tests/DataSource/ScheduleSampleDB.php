@@ -38,7 +38,11 @@ class ScheduleSampleDB implements ScheduleInterface
         return $this;
     }
 
-    public function get(int $id): Schedule
+    /**
+     * @param int $id
+     * @return Schedule|null
+     */
+    public function get(int $id)
     {
         if($schedule = $this->db[$id] ?? null){
             /** @var Schedule $schedule */

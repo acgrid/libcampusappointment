@@ -9,47 +9,53 @@
 namespace CampusAppointmentTest\DataSource;
 
 
+use CampusAppointment\DataSource\VisitorAbstractSource;
 use CampusAppointment\DataSource\VisitorInterface;
 use CampusAppointment\Model\Preset\Visitor;
+use CampusAppointmentTest\Adapter\StudentVisitorAdapter;
 
-class VisitorSampleDB implements VisitorInterface
+class VisitorSampleDB extends VisitorAbstractSource
 {
     private $db;
-
+    
     public function __construct()
     {
+        $this->registerAdapter(new StudentVisitorAdapter());
         $this->db = [
-
+            1 => ['id' => 1, 'name' => 'Adam', 'gender' => 'M', 'age' => 19, 'identity' => 'S', 'telephone' => '13985154311', 'place' => 'SE', 'passhash' => Visitor::NO_PASSWORD],
         ];
     }
 
-    public function registerExtendedSource(callable $detectMethod)
+    public function get(int $id)/*: ?Visitor*/
     {
-        // TODO: Implement registerExtendedSource() method.
-    }
-
-    public function get(int $id): Visitor
-    {
-        // TODO: Implement get() method.
+        return isset($this->db[$id]) ? $this->iterateFactory($this->db[$id]) : null;
     }
 
     public function find(array $conditions = []): array
     {
-        // TODO: Implement find() method.
+        throw new \BadMethodCallException('This method is not supported in sample object.');
     }
 
     public function query(array $conditions = [], array $fields = []): array
     {
-        // TODO: Implement query() method.
+        throw new \BadMethodCallException('This method is not supported in sample object.');
     }
 
     public function persist(Visitor $visitor): VisitorInterface
     {
-        // TODO: Implement persist() method.
+        $this->iteratePersist($visitor);
+        return $this;
+    }
+
+    public function persistAll(array $visitors): VisitorInterface
+    {
+        array_walk($visitors, [$this, 'persist']);
     }
 
     public function remove(Visitor $visitor): bool
     {
-        // TODO: Implement remove() method.
+        if($has = isset($this->db[$visitor->id])) unset($this->db[$visitor->id]);
+        return $has;
     }
+
 }

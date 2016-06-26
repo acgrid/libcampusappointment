@@ -8,7 +8,11 @@ use CampusAppointment\Model\Preset\Academy;
 
 interface AcademyInterface extends FlyweightSource
 {
-    public function get(int $id): Academy;
+    /**
+     * @param int $id
+     * @return Academy|null
+     */
+    public function get(int $id)/*: ?Academy*/;
     public function getAll(): array;
     public function persist(Academy $academy): AcademyInterface;
     public function persistAll(array $academies): AcademyInterface;

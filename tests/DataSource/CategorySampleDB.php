@@ -22,7 +22,7 @@ class CategorySampleDB implements CategoryInterface
     }
 
 
-    public function get(int $id): Category
+    public function get(int $id)
     {
         return $this->db[$id] ?? null;
     }

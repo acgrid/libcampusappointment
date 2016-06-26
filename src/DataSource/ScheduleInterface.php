@@ -10,7 +10,12 @@ interface ScheduleInterface extends FlyweightSource
 {
     public function withTutors(): ScheduleInterface;
     public function withoutTutors(): ScheduleInterface;
-    public function get(int $id): Schedule;
+
+    /**
+     * @param int $id
+     * @return Schedule|null
+     */
+    public function get(int $id)/*: ?Schedule*/;
     public function getScheduleTutors(int $id): array;
     public function find(array $conditions = []): array;
     public function query(array $conditions = [], array $fields = []): array;

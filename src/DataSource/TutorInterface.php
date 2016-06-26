@@ -8,8 +8,11 @@ use CampusAppointment\Model\Preset\Tutor;
 
 interface TutorInterface extends FlyweightSource
 {
-    
-    public function get(int $id): Tutor;
+    /**
+     * @param int $id
+     * @return Tutor|null
+     */
+    public function get(int $id)/*: ?Tutor*/;
     public function getAll(): array;
     public function persist(Tutor $tutor): TutorInterface;
     public function delete(Tutor $tutor): bool;
