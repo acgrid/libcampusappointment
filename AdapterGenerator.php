@@ -1,6 +1,6 @@
 <?php
 
-if($argv > 1){
+if($argc > 1){
     array_shift($argv);
     foreach($argv as $model){
         $paramName = strtolower($model);
